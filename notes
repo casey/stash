@@ -1,3 +1,9 @@
+. go to stash-url/link-name
+. if there's no file already, drag and drop your file onto the page
+. done
+
+. also a command line interface
 - add to flotilla readme
 - add to rodarmor.com/code/ flotilla section
 - guess mime type from data
+
