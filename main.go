@@ -1,14 +1,27 @@
 package app
 
-import "appengine"
-import "appengine/datastore"
-import "net/http"
-import "regexp"
-import "strings"
+import (
+	"appengine"
+	"appengine/datastore"
+	"net/http"
+	"regexp"
+	"strings"
+	"log"
+	"io/ioutil"
+	. "flotilla"
+)
 
-import . "flotilla"
+func mustRead(filename string) []byte {
+	b, err := ioutil.ReadFile(filename)
+	if err != nil {
+		log.Fatal("mustRead: failed to read file:", filename)
+	}
+	return b
+}
 
 var key_re = regexp.MustCompile(`^[a-zA-Z0-9_.-]+$`)
+
+var upload = string(mustRead("upload.html"))
 
 func init() {
   Handle("/").Put(put).Get(get).Options(options)
@@ -53,6 +66,9 @@ func get(r *http.Request) {
   Ensure(key_re.MatchString(key), StatusForbidden)
   value, e := getValue(c, key)
   Check(e)
-  Ensure(value != nil, StatusNotFound)
-  Body(StatusOK, *value, "text/plain; charset=utf-8")
+	if value == nil {
+		Body(StatusOK, upload, "text/html")
+	} else {
+		Body(StatusOK, *value, "text/plain; charset=utf-8")
+	}
 }

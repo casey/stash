@@ -6,4 +6,8 @@
 - add to flotilla readme
 - add to rodarmor.com/code/ flotilla section
 - guess mime type from data
+- change from string to []byte
+- allow redirects
 
+- store all static content in as uploads
+  . favicon
